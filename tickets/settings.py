@@ -10,7 +10,9 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/4.0/ref/settings/
 """
 import os
+import psycopg2
 import django_heroku
+import dj_database_url
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -80,15 +82,17 @@ WSGI_APPLICATION = 'tickets.wsgi.application'
 #         'NAME': BASE_DIR / 'db.sqlite3',
 #     }
 # }
-DATABASES = {
-    'ENGINE': 'django.db.backedns.postgresql_psycopg2',
-    'NAME': 'dfe37eblitsn60',
-    'USER': 'xmdnrmkxiixnad',
-    'PASSWORD': 'b1d37557edc835c249e0c377dca5f0a1185d8801be4fd08b18af9e5997782499',
-    'HOST': 'ec2-63-32-248-14.eu-west-1.compute.amazonaws.com',
-    'PORT': '5432',
-}
-
+# DATABASES = {
+#     'ENGINE': 'django.db.backedns.postgresql_psycopg2',
+#     'NAME': 'dfe37eblitsn60',
+#     'USER': 'xmdnrmkxiixnad',
+#     'PASSWORD': 'b1d37557edc835c249e0c377dca5f0a1185d8801be4fd08b18af9e5997782499',
+#     'HOST': 'ec2-63-32-248-14.eu-west-1.compute.amazonaws.com',
+#     'PORT': '5432'
+# }
+import dj_database_url
+db_from_env = dj.database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators

@@ -1,0 +1,31 @@
+{% extends 'helpdesk/base.html' %}
+{% block content %}
+{% load static %}
+{% for task in task_list %}
+<div class="job-content" style="margin-left:1.0rem; margin-top:0.5rem;">
+    <h5 class="text-center text-md-left">{{ task.title }}</h5>
+        <ul class="d-md-flex flex-wrap text-capitalize ff-open-sans">
+            <li class="mr-md-4">
+                <i class="zmdi zmdi-pin mr-2">Autor: {{ task.author }}</i>
+            </li>
+            <li class="mr-md-4">
+                <i class="zmdi zmdi-money mr-2"></i> Priorytet: {{ task.priority }}
+            </li>
+            <li class="mr-md-4">
+                <i class="zmdi zmdi-time mr-2"></i> Stworzono: {{ task.created_at|date:"d-m-Y H:i" }}
+            </li>
+            <li class="mr-md-4">
+                <i class="zmdi zmdi-time mr-2"></i> Zaktualizowano: {{ task.updated_at|date:"d-m-Y H:i" }}
+            </li>
+            <li class="mr-md-4">
+                <i class="zmdi zmdi-time mr-2"></i> Minęło: {{ task.created_at|timesince:a_time }}
+            </li>
+            <ul>
+                <span class="badge bg-primary">{{ task.status }}</span></h5>
+                <!--<a href="/file_edit/{{ filename }}" class="btn d-block w-100 d-sm-inline-block btn-light">Edytuj</a>-->
+            </ul>
+        </ul>
+
+</div>
+{% endfor %}
+{% endblock %}

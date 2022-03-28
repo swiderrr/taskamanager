@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'helpdesk',
 ]
 
 MIDDLEWARE = [
@@ -74,23 +75,17 @@ TEMPLATES = [
 WSGI_APPLICATION = 'tickets.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/4.0/ref/settings/#databases
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql_psycopg2',
+        'NAME': 'dfe37eblitsn60',
+        'USER': 'xmdnrmkxiixnad',
+        'PASSWORD': 'b1d37557edc835c249e0c377dca5f0a1185d8801be4fd08b18af9e5997782499',
+        'HOST': 'ec2-63-32-248-14.eu-west-1.compute.amazonaws.com',
+        'PORT': '5432',
     }
 }
-# DATABASES = {
-#     'ENGINE': 'django.db.backedns.postgresql_psycopg2',
-#     'NAME': 'dfe37eblitsn60',
-#     'USER': 'xmdnrmkxiixnad',
-#     'PASSWORD': 'b1d37557edc835c249e0c377dca5f0a1185d8801be4fd08b18af9e5997782499',
-#     'HOST': 'ec2-63-32-248-14.eu-west-1.compute.amazonaws.com',
-#     'PORT': '5432'
-# }
 import dj_database_url
 db_from_env = dj_database_url.config(conn_max_age=600)
 DATABASES['default'].update(db_from_env)
@@ -119,20 +114,23 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Warsaw'
 
 USE_I18N = True
 
 USE_TZ = True
+
+DATETIME_FORMAT = '%Y-%m-%d %H:%M'
 
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
 # STATIC_URL = 'static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATIC_URL = "/static/"
+STATIC_URL = 'helpdesk/staticfiles/'
+STATIC_ROOT = 'staticfiles'
 django_heroku.settings(locals())
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field

@@ -41,6 +41,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'helpdesk',
+    'fontawesomefree',
 ]
 
 MIDDLEWARE = [
@@ -59,7 +60,7 @@ ROOT_URLCONF = 'tickets.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': ['helpdesk/templatetags'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -126,10 +127,19 @@ DATETIME_FORMAT = '%Y-%m-%d %H:%M'
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.0/howto/static-files/
 
-# STATIC_URL = 'static/'
-STATIC_URL = 'helpdesk/staticfiles/'
-STATIC_ROOT = 'staticfiles'
-django_heroku.settings(locals())
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+PROJECT_FOLDER = os.path.abspath(os.path.dirname(__file__))
+
+STATIC_ROOT = os.path.join(PROJECT_FOLDER, "static")
+STATIC_URL = '/staticfiles/'
+
+STATICFILES_DIRS = (os.path.join(BASE_DIR, "staticfiles"), )
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+)
+
 
 
 # Default primary key field type

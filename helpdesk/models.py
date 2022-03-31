@@ -31,11 +31,20 @@ class Task(models.Model):
     def publish(self):
         self.save()
 
-    def elapsed_time(self):
-        a_time = datetime.now()
-        return self.created_at - a_time
+    def task_started(self):
+        self.status = 'W trakcie'
+        return self.save()
 
 
     def __str__(self):
         return self.title
+
+class Comment(models.Model):
+    author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    text = models.TextField(max_length=1000, null=False)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def publish(self):
+        self.save()
 

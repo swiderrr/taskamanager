@@ -1,3 +1,16 @@
+.fa {
+font-family: 'FontAwesome' !important;
+}
+
+.fp-prev:before {
+    color:#000;
+    content: '\f35a'; /* You should use \ and not /*/
+    font-family: "Font Awesome 5 Free"; /* This is the correct font-family*/
+    font-style: normal;
+    font-weight: 900;
+    font-size:40px;
+}
+
 .site-title{
     margin-left: 1.0rem;
     font-size: 1.5rem;
@@ -83,7 +96,6 @@
   font-size: 18px;
   color: #ffffff;
   content: '\F2F9';
-  font-family: "Material-Design-Iconic-Font";
 }
 
 .filter-result .job-box {
@@ -112,7 +124,6 @@ ul {
   background-color: #4e63d7;
   background-image: -webkit-gradient(linear, left top, right top, from(rgba(78, 99, 215, 0.9)), to(#5a85dd));
   background-image: linear-gradient(to right, rgba(78, 99, 215, 0.9) 0%, #5a85dd 100%);
-  font-family: "Open Sans", sans-serif;
   color: #fff;
   font-size: 22px;
   font-weight: 700;
@@ -196,3 +207,5 @@ ul {
 .mb-30 {
     margin-bottom: 30px;
 }
+
+

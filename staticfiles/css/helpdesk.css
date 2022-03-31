@@ -1,5 +1,9 @@
+body{
+    font-family:"Lato";
+}
+
 .fa {
-font-family: 'FontAwesome' !important;
+    font-family: 'FontAwesome' !important;
 }
 
 .fp-prev:before {
@@ -9,6 +13,18 @@ font-family: 'FontAwesome' !important;
     font-style: normal;
     font-weight: 900;
     font-size:40px;
+}
+
+.comments_headline{
+    background-color: #cff1ff;
+}
+
+.comment {
+    text-align: center;
+    display: inline-block;
+    border-bottom: 2px solid #cff1ff;
+    width: 50%;
+
 }
 
 .site-title{

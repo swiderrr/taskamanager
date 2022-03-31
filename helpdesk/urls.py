@@ -9,5 +9,6 @@ urlpatterns = [
     path('addtask', views.addtask_page, name='addtask_page'),
     path('posttask', views.posttask_page, name='posttask_page'),
     path('taskdetails/<int:pk>/', views.taskdetails_page, name='taskdetails_page'),
+    path('deletetask/<int:pk>/', views.deletetask_page, name='deletetask_page'),
     path('taskdetails/<int:pk>/postcomment', views.postcomment_page, name='postcomment_page'),
 ]

@@ -10,6 +10,10 @@ class TaskForm(forms.ModelForm):
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
+        widgets = {
+            'text': forms.Textarea(attrs={'rows': 5, 'cols': 100}),
+        }
         field = ('text')
+
         exclude = ['author', 'created_at', 'task']
 

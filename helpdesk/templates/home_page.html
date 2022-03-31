@@ -9,13 +9,12 @@
         <div class="job-content" style="margin-top:0.5rem; background-color: #cff1ff">
     {% endif %}
 
-    <h5 class="text-center text-md-left">{{ task.title }}</h5>
-        <ul class="d-sm-flex flex-wrap text-capitalize ff-open-sans" style="height:0.75rem;">
+    <h5 class="text-center text-md-left">{{ task.title }}
+         <span class="badge bg-{{priority_dict|get_item:task.priority}}">{{ task.priority }}</span></h5>
+    </h5>
+        <ul class="d-sm-flex flex-wrap text-capitalize ff-open-sans" style="height:2.75rem;">
             <li class="mr-sm-4">
-                <p class="zmdi zmdi-pin mr-2">Autor: {{ task.author }}</p>
-            </li>
-            <li class="mr-sm-4">
-                <i class="zmdi zmdi-money mr-2"></i> Priorytet: {{ task.priority }}
+                <p class="zmdi zmdi-pin mr-2">{{ task.author }}</p>
             </li>
             <li class="mr-sm-4">
                 <i class="zmdi zmdi-time mr-2"></i> Stworzono: {{ task.created_at|date:"d-m-Y H:i" }}
@@ -26,17 +25,14 @@
             <li class="mr-sm-4">
                 <i class="zmdi zmdi-time mr-2"></i> Minęło: {{ task.created_at|timesince:a_time }}
             </li>
+            <li class="mr-sm-4">
+                <span class="badge bg-{{statuses|get_item:task.status}}">{{ task.status }}</span>
+            </li>
             <li>
-                <a class="fa fa-magnifying-glass fa-lg" href="{% url 'taskdetails_page' pk=task.id %}"></a>
+                <a class="fa fa-magnifying-glass fa-lg" style="color:#002e60;" href="{% url 'taskdetails_page' pk=task.id %}">&nbsp;&nbsp;</a>
+                <a class="fa fa-trash fa-lg" style="color:#002e60;" href="{% url 'deletetask_page' pk=task.id %}"></a>
             </li>
         </ul>
-        <ul>
-            <li>
-                <span class="badge bg-{{statuses|get_item:task.status}}">{{ task.status }}</span></h5>
-            </li>
-        </ul>
-        </ul>
-
 </div>
 {% endfor %}
 {% endblock %}

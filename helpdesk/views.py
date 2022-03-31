@@ -26,16 +26,23 @@ def login_page(request):
 
 def home_page(request):
     if request.user.is_authenticated:
-        task_list = Task.objects.all()
+        if request.user.is_superuser:
+            task_list = Task.objects.all()
+        else:
+            task_list = Task.objects.filter(author=request.user)
         a_time = datetime.now(timezone.utc)
         statuses = {'Stworzono': 'primary',
                     'W trakcie': 'secondary',
                     'Częściowo rozwiązany': 'warning',
                     'Rozwiązany': 'success',
                     'Zamknięty': 'danger', }
+        priority_dict = {'Niski': 'success',
+                    'Normalny': 'warning',
+                    'Wysoki': 'danger'}
         return render(request, 'home_page.html', {'task_list': task_list,
                                                   'a_time': a_time,
-                                                  'statuses': statuses})
+                                                  'statuses': statuses,
+                                                  'priority_dict': priority_dict})
     else:
         return redirect('login_page')
 
@@ -50,6 +57,10 @@ def addtask_page(request):
     task_form = TaskForm()
     return render(request, 'addtask_page.html', {'task_form': task_form})
 
+def deletetask_page(request, pk):
+    task = get_object_or_404(Task, pk=pk)
+    task.task_delete()
+    return redirect('home_page')
 
 def posttask_page(request):
     task_form = TaskForm()
@@ -70,9 +81,11 @@ def taskdetails_page(request, pk):
     task = get_object_or_404(Task, pk=pk)
     a_time = datetime.now(timezone.utc)
     comment_form = CommentForm()
+    comments_list = Comment.objects.filter(task_id=pk)
     return render(request, 'helpdesk/taskdetails_page.html', {'task': task,
                                                               'a_time': a_time,
-                                                              'comment_form': comment_form})
+                                                              'comment_form': comment_form,
+                                                              'comments_list': comments_list})
 
 def postcomment_page(request, pk):
     comment_form = CommentForm()
@@ -85,7 +98,7 @@ def postcomment_page(request, pk):
             comment.task = task
             comment.save()
             task.task_started()
-        return redirect('home_page')
+        return redirect(request.META['HTTP_REFERER'])
     else:
         message = "Nie udało się dodać komentarza"
         return redirect("taskdetails_page.html", {'message': message})

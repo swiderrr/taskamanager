@@ -1,15 +1,29 @@
 {% extends 'helpdesk/base.html' %}
 {% block content %}
-
-<h1>{{ task.title }}</h1>
+<div class="comments_headline" style="text-align:center;">
+<h1>{{ task.title }} <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='{% url 'home_page' %}'">Powrót</button></h1>
 <p><b>Minęło: {{ task.created_at|timesince:a_time }}</b></p>
-<p>{{ task.desc }}</p>
+<p>{{ task.desc }} </p>
+</div>
 
-<form action='postcomment' method="POST">
+<div class="comments_container" style="text-align:center;">
+    <h3>Komentarze:</h3>
+{% for comment in comments_list %}
+    <div class="comment">
+        <h6 style="text-align:left;"><b>{{ comment.author }}</b>&nbsp;({{ comment.created_at|date:"d-m-Y H:i" }})</h6>
+        {{ comment.text|linebreaks }}
+    </div>
+{% endfor %}
+</div>
+
+<form action='postcomment' method="POST" style="text-align:center; margin-top:10px;">
 {% csrf_token %}
 {{ comment_form.as_p }}
     <button type="submit" class="btn btn-primary" value="Wyślij" onclick="location.href='{% url 'postcomment_page' pk=task.id %}'">Wyślij</button>
+    {% if request.user.is_superuser %}
+        <button type="button" class="btn btn-secondary" onclick="location.href='{% url 'home_page' %}'">Powrót</button>
+    {% endif %}
 </form>
 
-<button type="button" class="btn btn-secondary" onclick="location.href='{% url 'home_page' %}'">Powrót</button>
+
 {% endblock %}

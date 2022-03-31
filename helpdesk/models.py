@@ -35,6 +35,8 @@ class Task(models.Model):
         self.status = 'W trakcie'
         return self.save()
 
+    def task_delete(self):
+        return self.delete()
 
     def __str__(self):
         return self.title

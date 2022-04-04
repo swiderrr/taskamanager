@@ -42,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'helpdesk',
     'fontawesomefree',
+    'storages',
 ]
 
 MIDDLEWARE = [
@@ -60,7 +61,7 @@ ROOT_URLCONF = 'tickets.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': ['helpdesk/templatetags'],
+        'DIRS': ['helpdesk/templatetags', 'helpdesk/templates/helpdesk'],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -139,10 +140,19 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
-
+AWS_DEFAULT_ACL = None
 
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/4.0/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+
+AWS_ACCESS_KEY_ID = 'AKIAUYPSJO3G3DZ5MNAD'
+AWS_SECRET_ACCESS_KEY = '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'
+AWS_STORAGE_BUCKET_NAME = 'helpdeskpvpl'
+AWS_QUERYSTRING_AUTH = False
+AWS_S3_FILE_OVERWRITE = False
+AWS_DEFAULT_ACL = None

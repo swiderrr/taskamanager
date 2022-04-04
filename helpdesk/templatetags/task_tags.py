@@ -6,3 +6,9 @@ register = template.Library()
 @register.filter
 def get_item(dict, key):
     return dict.get(key)
+
+@register.filter
+def get_filename(filename):
+    return filename.split('/')[-1]
+
+

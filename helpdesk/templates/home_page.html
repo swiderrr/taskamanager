@@ -2,37 +2,71 @@
 {% block content %}
 {% load static %}
 {% load task_tags %}
-{% for task in task_list %}
-    {% if forloop.counter|divisibleby:2 %}
-        <div class="job-content" style="margin-top:0.5rem; background-color: #e2e2e2">
-    {% else %}
-        <div class="job-content" style="margin-top:0.5rem; background-color: #cff1ff">
-    {% endif %}
 
-    <h5 class="text-center text-md-left">{{ task.title }}
-         <span class="badge bg-{{priority_dict|get_item:task.priority}}">{{ task.priority }}</span></h5>
-    </h5>
-        <ul class="d-sm-flex flex-wrap text-capitalize ff-open-sans" style="height:2.75rem;">
-            <li class="mr-sm-4">
-                <p class="zmdi zmdi-pin mr-2">{{ task.author }}</p>
-            </li>
-            <li class="mr-sm-4">
-                <i class="zmdi zmdi-time mr-2"></i> Stworzono: {{ task.created_at|date:"d-m-Y H:i" }}
-            </li>
-            <li class="mr-sm-4">
-                <i class="zmdi zmdi-time mr-2"></i> Zaktualizowano: {{ task.updated_at|date:"d-m-Y H:i" }}
-            </li>
-            <li class="mr-sm-4">
-                <i class="zmdi zmdi-time mr-2"></i> Minęło: {{ task.created_at|timesince:a_time }}
-            </li>
-            <li class="mr-sm-4">
-                <span class="badge bg-{{statuses|get_item:task.status}}">{{ task.status }}</span>
-            </li>
-            <li>
-                <a class="fa fa-magnifying-glass fa-lg" style="color:#002e60;" href="{% url 'taskdetails_page' pk=task.id %}">&nbsp;&nbsp;</a>
-                <a class="fa fa-trash fa-lg" style="color:#002e60;" href="{% url 'deletetask_page' pk=task.id %}"></a>
-            </li>
-        </ul>
-</div>
-{% endfor %}
+<main>
+  <table class="table_hp">
+    <thead>
+      <tr>
+        <th>
+          Autor
+        </th>
+        <th>
+          Status
+        </th>
+        <th>
+          Tytuł
+        </th>
+        <th>
+            Stworzono
+        </th>
+        <th>
+            Aktualizacja
+        </th>
+        <th>
+            Minęło
+        </th>
+        <th>
+            Priorytet
+        </th>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+    {% for task in task_list %}
+      <tr>
+        <td data-title='Author'>
+            {{ task.author }}
+        </td>
+        <td data-title='Statuses'>
+            <span class="badge bg-{{statuses|get_item:task.status}}">{{ task.status }}</span></h5>
+        </td>
+        <td data-title='Title'>
+            {{ task.title }}
+        </td>
+        <td data-title='Created_at'>
+            {{ task.created_at|date:"d-m-Y H:i" }}
+        </td>
+        <td data-title='Updated_at'>
+            {{ task.updated_at|date:"d-m-Y H:i" }}
+        </td>
+        <td data-title='Elapsed'>
+          {{ task.created_at|timesince:a_time }}
+        </td>
+        <td data-title='Priority'>
+          <span class="badge bg-{{priorities|get_item:task.priority}}">{{ task.priority }}</span></h5>
+        </td>
+        <td class='select'>
+            <a class="fa fa-magnifying-glass fa-lg button_hp" style="color:#0DBF9F;" href="{% url 'taskdetails_page' pk=task.id %}"></a>
+            <a class="fa fa-trash fa-lg button_hp" style="color:#0DBF9F;" href="{% url 'deletetask_page' pk=task.id %}"></a>
+            {% if request.user.is_superuser %}
+                <a class="fa fa-check fa-lg button_hp" style="color:#0DBF9F;" href="{% url 'closetask_page' pk=task.id %}">{{ task.changeto_closed }}</a>
+            {% else %}
+            <p>dasda</p>
+            {% endif %}
+            </a>
+        </td>
+      </tr>
+    {% endfor %}
+    </tbody>
+  </table>
 {% endblock %}

@@ -1,5 +1,6 @@
 from django.db import models
 from datetime import datetime
+import boto3
 
 
 PRIORITY_CHOICES = (
@@ -38,6 +39,10 @@ class Task(models.Model):
     def task_delete(self):
         return self.delete()
 
+    def status_closed(self):
+        self.status = 'Zamknięty'
+        return
+
     def __str__(self):
         return self.title
 
@@ -50,3 +55,21 @@ class Comment(models.Model):
     def publish(self):
         self.save()
 
+
+class Picture(models.Model):
+    author = models.ForeignKey('auth.User', on_delete=models.SET('Anonymous user'))
+    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    file = models.FileField(upload_to='media/', null=False)
+
+    def convert_file_to_path(self, fileObj):
+        media_root = 'https://helpdeskpvpl.s3.eu-central-1.amazonaws.com/media/'
+        try:
+            file_path = fileObj.url
+            file_path = file_path.split('/')
+            self.file = media_root + file_path[-1]
+        except ValueError:
+            print('Błąd')
+
+
+    def publish(self):
+        self.save()

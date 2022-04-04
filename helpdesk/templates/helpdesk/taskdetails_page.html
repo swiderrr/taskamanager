@@ -1,8 +1,17 @@
 {% extends 'helpdesk/base.html' %}
 {% block content %}
+{% load task_tags %}
 <div class="comments_headline" style="text-align:center;">
 <h1>{{ task.title }} <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='{% url 'home_page' %}'">Powrót</button></h1>
+
+{% for pic in pictures_list %}
+<a class="badge rounded-pill bg-info text-dark" target="_blank" href="{{ pic.file }}"><i class="fa fa-file" style="margin-right:8px;"></i>{{pic.file.url|get_filename}}</a>
+{% endfor %}
+
 <p><b>Minęło: {{ task.created_at|timesince:a_time }}</b></p>
+<p>
+    <span class="badge bg-{{statuses|get_item:task.status}}">{{ task.status }}</span>
+</p>
 <p>{{ task.desc }} </p>
 </div>
 
@@ -16,14 +25,12 @@
 {% endfor %}
 </div>
 
-<form action='postcomment' method="POST" style="text-align:center; margin-top:10px;">
-{% csrf_token %}
-{{ comment_form.as_p }}
-    <button type="submit" class="btn btn-primary" value="Wyślij" onclick="location.href='{% url 'postcomment_page' pk=task.id %}'">Wyślij</button>
-    {% if request.user.is_superuser %}
-        <button type="button" class="btn btn-secondary" onclick="location.href='{% url 'home_page' %}'">Powrót</button>
-    {% endif %}
+<form action='' method="POST" style="text-align:center; margin-top:10px;" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ comment_form.as_p }}
+    {{ picture_form.as_p }}
+    <button type="submit" class="btn btn-primary" value="Wyślij">Wyślij</button>
+    <button type="button" class="btn btn-secondary" onclick="location.href='{% url 'home_page' %}'">Powrót</button>
 </form>
-
 
 {% endblock %}

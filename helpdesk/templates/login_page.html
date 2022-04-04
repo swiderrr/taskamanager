@@ -1,34 +1,41 @@
- <!-- {% if message %}
+{% if message %}
   <script>
        alert('{{ message }}');
-    </script>
-
+  </script>
 {% endif %}
--->
-
 {% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>PV Poland File Manager</title>
+    <title>PV Poland Task Manager</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <link href="//fonts.googleapis.com/css?family=Lobster&subset=latin,latin-ext" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="{% static 'css/helpdesk.css' %}">
+    <link rel="stylesheet" href="{% static 'css/helpdesk.css' %}">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v6.1.1/css/all.css">
 </head>
 <body>
-<p class="site-title">PV Poland Task Manager</p>
-    <form action="" method="post">
-    {% csrf_token %}
-        <div class="form-floating col-md-2">
-            <label for="floatingInput"><b>Nazwa użytkownika:</b></label>
-            <input type="username" class="form-control" id="floatingInput" name="username" placeholder="name@example.com">
-        </div>
+<div class="wrapper_lp fadeInDown">
+  <div id="formContent">
+    <!-- Tabs Titles -->
+    <h2 class="active"> Logowanie </h2>
 
-        <div class="form-floating col-md-2">
-            <label for="floatingPassword"><b>Hasło</b></label>
-            <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="password">
-            <input type="submit" class="btn btn-primary" value="Zaloguj">
+    <!-- Icon -->
+    <div class="fadeIn first">
+      <a class="fa fa-user fa-lg" style="color:#002e60; margin-top: 1.0rem; margin-bottom: 1.0rem;"></a><br>
+    </div>
+
+    <!-- Login Form -->
+    <form action="" method="post">
+        {% csrf_token %}
+        <input type="text" id="login" class="fadeIn second" name="username" placeholder="e-mail">
+        <input type="password" id="password" class="fadeIn third" name="password" placeholder="password">
+        <input type="submit" class="fadeIn fourth" value="Log In">
     </form>
-        </div>
+
+
+  </div>
+</div>
 </body>
 </html>
+

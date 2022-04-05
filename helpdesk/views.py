@@ -78,11 +78,11 @@ def deletecomment_page(request, comm_pk, pk):
     comment.comment_delete()
     return redirect(request.META['HTTP_REFERER'])
 
-def closetask_page(pk):
+def closetask_page(request, pk):
     task = get_object_or_404(Task, pk=pk)
     task.status_closed()
     task.save()
-    return redirect('home_page')
+    return redirect(request.META['HTTP_REFERER'])
 
 def posttask_page(request):
     task_form = TaskForm()
@@ -125,7 +125,7 @@ def taskdetails_page(request, pk):
         a_time = datetime.now(timezone.utc)
         comment_form = CommentForm()
         picture_form = PictureForm()
-        comments_list = Comment.objects.filter(task_id=pk)
+        comments_list = Comment.objects.filter(task_id=pk).order_by('created_at')
         return render(request, 'helpdesk/taskdetails_page.html', {'task': task,
                                                                   'a_time': a_time,
                                                                   'comment_form': comment_form,

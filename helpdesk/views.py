@@ -5,6 +5,7 @@ from helpdesk.models import Task, Comment, Picture
 from .forms import TaskForm, CommentForm, PictureForm
 from datetime import datetime, timezone
 from django.shortcuts import render, get_object_or_404
+from django.forms.models import model_to_dict
 from django.template import RequestContext
 import boto3
 import os
@@ -66,31 +67,31 @@ def addtask_page(request):
     return render(request, 'addtask_page.html', {'task_form': task_form,
                                                  'picture_form': picture_form})
 
-def deletetask_page(request, pk):
+def deletetask_page(pk):
     task = get_object_or_404(Task, pk=pk)
     task.task_delete()
     return redirect('home_page')
 
-def closetask_page(request, pk):
+def deletecomment_page(request, comm_pk, pk):
+    comment = get_object_or_404(Comment, pk=comm_pk)
+    task = get_object_or_404(Task, pk=pk)
+    comment.comment_delete()
+    return redirect(request.META['HTTP_REFERER'])
+
+def closetask_page(pk):
     task = get_object_or_404(Task, pk=pk)
     task.status_closed()
+    task.save()
     return redirect('home_page')
 
 def posttask_page(request):
     task_form = TaskForm()
-    picture_form = TaskForm()
     if request.method == "POST":
         task_form = TaskForm(request.POST)
-        picture_form = PictureForm(request.POST)
         if task_form.is_valid():
             task = task_form.save(commit=False)
-            picture = picture_form.save(commit=False)
             task.author = request.user
-            picture.author = request.user
-            short_url = picture_form.cleaned_data['url']
-            picture.set_fullpath(short_url)
             task.save()
-            picture.save()
         status = 'Created'
         return redirect('home_page')
     else:
@@ -112,8 +113,7 @@ def taskdetails_page(request, pk):
             comment.save()
             task.task_started()
             if picture_form['file'].value() is not None:
-                picture.author = request.user
-                picture.task = task
+                picture.comment = comment
                 picture_form.save()
                 picture.convert_file_to_path(picture.file)
                 picture.save()
@@ -126,11 +126,9 @@ def taskdetails_page(request, pk):
         comment_form = CommentForm()
         picture_form = PictureForm()
         comments_list = Comment.objects.filter(task_id=pk)
-        pictures_list = Picture.objects.filter(task_id=pk)
         return render(request, 'helpdesk/taskdetails_page.html', {'task': task,
                                                                   'a_time': a_time,
                                                                   'comment_form': comment_form,
                                                                   'picture_form': picture_form,
                                                                   'statuses': STATUSES_DICT,
-                                                                  'comments_list': comments_list,
-                                                                  'pictures_list': pictures_list})
+                                                                  'comments_list': comments_list,})

@@ -28,6 +28,9 @@
         <th>
             Priorytet
         </th>
+        <th>
+            Komentarze
+        </th>
         <th></th>
       </tr>
     </thead>
@@ -55,15 +58,14 @@
         <td data-title='Priority'>
           <span class="badge bg-{{priorities|get_item:task.priority}}">{{ task.priority }}</span></h5>
         </td>
+        <td data-title='Comments'>
+            <span>{{ task.comment_set.all.count }}</span></h5>
+        </td>
         <td class='select'>
             <a class="fa fa-magnifying-glass fa-lg button_hp" style="color:#0DBF9F;" href="{% url 'taskdetails_page' pk=task.id %}"></a>
             <a class="fa fa-trash fa-lg button_hp" style="color:#0DBF9F;" href="{% url 'deletetask_page' pk=task.id %}"></a>
-            {% if request.user.is_superuser %}
-                <a class="fa fa-check fa-lg button_hp" style="color:#0DBF9F;" href="{% url 'closetask_page' pk=task.id %}">{{ task.changeto_closed }}</a>
-            {% else %}
-            <p>dasda</p>
-            {% endif %}
-            </a>
+            <a class="fa fa-check fa-lg button_hp" style="color:#0DBF9F;" href="{% url 'closetask_page' pk=task.id %}"></a>
+
         </td>
       </tr>
     {% endfor %}

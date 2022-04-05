@@ -18,8 +18,6 @@ STATUS_CHOICES = (
 )
 
 
-
-
 class Task(models.Model):
     author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     title = models.CharField(max_length=200, null=False)
@@ -52,13 +50,16 @@ class Comment(models.Model):
     text = models.TextField(max_length=1000, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
+
     def publish(self):
         self.save()
 
+    def comment_delete(self):
+        return self.delete()
+
 
 class Picture(models.Model):
-    author = models.ForeignKey('auth.User', on_delete=models.SET('Anonymous user'))
-    task = models.ForeignKey(Task, on_delete=models.CASCADE)
+    comment = models.ForeignKey(Comment, on_delete=models.CASCADE)
     file = models.FileField(upload_to='media/', null=False)
 
     def convert_file_to_path(self, fileObj):

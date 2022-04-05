@@ -26,7 +26,7 @@ class PictureForm(forms.ModelForm):
     class Meta:
         model = Picture
         field = ('file')
-        exclude = ['author', 'task']
+        exclude = ['comment']
 
     def __init__(self, *args, **kwargs):
         super(PictureForm, self).__init__(*args, **kwargs)

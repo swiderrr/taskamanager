@@ -4,10 +4,6 @@
 <div class="comments_headline" style="text-align:center;">
 <h1>{{ task.title }} <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='{% url 'home_page' %}'">Powrót</button></h1>
 
-{% for pic in pictures_list %}
-<a class="badge rounded-pill bg-info text-dark" target="_blank" href="{{ pic.file }}"><i class="fa fa-file" style="margin-right:8px;"></i>{{pic.file.url|get_filename}}</a>
-{% endfor %}
-
 <p><b>Minęło: {{ task.created_at|timesince:a_time }}</b></p>
 <p>
     <span class="badge bg-{{statuses|get_item:task.status}}">{{ task.status }}</span>
@@ -19,8 +15,17 @@
     <h3>Komentarze:</h3>
 {% for comment in comments_list %}
     <div class="comment">
-        <h6 style="text-align:left;"><b>{{ comment.author }}</b>&nbsp;({{ comment.created_at|date:"d-m-Y H:i" }})</h6>
-        {{ comment.text|linebreaks }}
+        <table>
+            <td style="border:0px; text-align:right;">
+            <h6 style="text-align:left;"><b>{{ comment.author }}</b>&nbsp;({{ comment.created_at|date:"d-m-Y H:i" }}) <a class="fa fa-trash" href="{% url 'deletecomment_page' pk=task.id comm_pk=comment.id %}"></a></h6>
+            {% if comment.picture_set.get.file.url %}
+                <a class="img-preview-box" target="_blank" href="{{ comment.picture_set.get.file }}">
+                    <img class="img-preview" src="{{ comment.picture_set.get.file }}" alt="Forest">
+                </a>
+            {% endif %}
+            {{ comment.text|linebreaks }}
+            </td>
+        </table>
     </div>
 {% endfor %}
 </div>

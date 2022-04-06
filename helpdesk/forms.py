@@ -16,7 +16,10 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         widgets = {
-            'text': forms.Textarea(attrs={'rows': 5, 'cols': 100, 'class': 'comment_area'}),
+            'text': forms.Textarea(attrs={'rows': 5, 'cols': 100, 'class': 'form-control ml-1 shadow-none textarea'}),
+        }
+        labels = {
+            "text": "",
         }
         field = ('text')
         exclude = ['author', 'created_at', 'task']
@@ -25,6 +28,9 @@ class CommentForm(forms.ModelForm):
 class PictureForm(forms.ModelForm):
     class Meta:
         model = Picture
+        labels = {
+            "file": "",
+        }
         field = ('file')
         exclude = ['comment']
 

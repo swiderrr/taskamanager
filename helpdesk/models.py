@@ -1,7 +1,8 @@
 from django.db import models
 from datetime import datetime
 import boto3
-
+from django.conf import settings
+from django.contrib.auth.models import User
 
 PRIORITY_CHOICES = (
     ('Niski','Niski'),
@@ -16,7 +17,6 @@ STATUS_CHOICES = (
     ('Rozwiązany','Rozwiązany'),
     ('Zamknięty','Zamknięty'),
 )
-
 
 class Task(models.Model):
     author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
@@ -72,5 +72,18 @@ class Picture(models.Model):
             print('Błąd')
 
 
+    def picture_delete(self):
+        return self.delete()
+
+    def picture_delete(self):
+        client = boto3.client('s3')
+        bucket = settings.AWS_STORAGE_BUCKET_NAME
+        path = self.file.url.split('/')[-2:]
+        path = '/'.join(path)
+        print(path)
+        client.delete_object(Bucket=bucket, Key=path)
+
+
     def publish(self):
         self.save()
+

@@ -75,7 +75,9 @@ def deletetask_page(pk):
 def deletecomment_page(request, comm_pk, pk):
     comment = get_object_or_404(Comment, pk=comm_pk)
     task = get_object_or_404(Task, pk=pk)
+    picture = Picture.objects.get(comment_id=comment.id)
     comment.comment_delete()
+    picture.picture_delete()
     return redirect(request.META['HTTP_REFERER'])
 
 def closetask_page(request, pk):

@@ -11,31 +11,46 @@
 <p>{{ task.desc }} </p>
 </div>
 
-<div class="comments_container" style="text-align:center;">
-    <h3>Komentarze:</h3>
-{% for comment in comments_list %}
-    <div class="comment">
-        <table>
-            <td style="border:0px; text-align:right;">
-            <h6 style="text-align:left;"><b>{{ comment.author }}</b>&nbsp;({{ comment.created_at|date:"d-m-Y H:i" }}) <a class="fa fa-trash" href="{% url 'deletecomment_page' pk=task.id comm_pk=comment.id %}"></a></h6>
-            {% if comment.picture_set.get.file.url %}
-                <a class="img-preview-box" target="_blank" href="{{ comment.picture_set.get.file }}">
-                    <img class="img-preview" src="{{ comment.picture_set.get.file }}" alt="Forest">
-                </a>
-            {% endif %}
-            {{ comment.text|linebreaks }}
-            </td>
-        </table>
-    </div>
-{% endfor %}
-</div>
 
-<form action='' method="POST" style="text-align:center; margin-top:10px;" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ comment_form.as_p }}
-    {{ picture_form.as_p }}
-    <button type="submit" class="btn btn-primary" value="Wyślij">Wyślij</button>
-    <button type="button" class="btn btn-secondary" onclick="location.href='{% url 'home_page' %}'">Powrót</button>
-</form>
+<div class="container mt-5">
+    <div class="d-flex justify-content-center row">
+        <div class="col-md-8">
+            <div class="d-flex flex-column comment-section">
+                {% for comment in comments_list %}
+                    <div class="bg-white p-2" style="border-bottom: 2px dotted #c2c2c2;">
+                        <div class="d-flex flex-row user-info"><img class="rounded-circle" src="https://ui-avatars.com/api/?name={{ user.username|get_fullname }}" width="40">
+                            <div class="d-flex flex-column justify-content-start ml-2">
+                                <span class="d-block font-weight-bold name">{{ comment.author }}
+                                    {% if user == comment.author %}
+                                        <a class="fa fa-trash fa-sm" href="{% url 'deletecomment_page' pk=task.id comm_pk=comment.id %}" style="color:#c2c2c2;"></a>
+                                    {% endif %}
+                                </span>
+                                <span class="date text-black-50">{{ comment.created_at|date:"d-m-Y H:i" }}</span>
+                            </div>
+                        </div>
+                        <div class="mt-2">
+                            <p class="comment-text">{{ comment.text|linebreaks }}</p>
+                        </div>
+                        <div>
+                            {% if comment.picture_set.get.file.url %}
+                                <a class="img-preview-box" target="_blank" href="{{ comment.picture_set.get.file }}">
+                                    <img class="img-preview" src="{{ comment.picture_set.get.file }}">
+                                </a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            <form action='' method="POST" style="text-align:center; margin-top:10px;" enctype="multipart/form-data">
+                {% csrf_token %}
+                <div class="bg-light p-2">
+                    <div class="d-flex flex-row align-items-start"><img class="rounded-circle" src="https://ui-avatars.com/api/?name={{ user.username|get_fullname }}" width="40">{{ comment_form }}</div>
+                    <div class="mt-2 text-left">{{ picture_form }}</div>
+                    <div class="mt-2 text-right"><button class="btn btn-primary btn-sm shadow-none" type="submit">Dodaj komentarz</button><button class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="button" onclick="location.href='{% url 'home_page' %}'">Powrót</button></div>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+</div>
 
 {% endblock %}

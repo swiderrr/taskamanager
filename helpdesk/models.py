@@ -3,6 +3,9 @@ from datetime import datetime
 import boto3
 from django.conf import settings
 from django.contrib.auth.models import User
+from dotenv import load_dotenv
+
+load_dotenv()
 
 PRIORITY_CHOICES = (
     ('Niski','Niski'),
@@ -72,12 +75,10 @@ class Picture(models.Model):
             print('Błąd')
 
 
-    def picture_delete(self):
-        return self.delete()
 
     def picture_delete(self):
         client = boto3.client('s3')
-        bucket = settings.AWS_STORAGE_BUCKET_NAME
+        bucket = os.getenv("DB_NAME")
         path = self.file.url.split('/')[-2:]
         path = '/'.join(path)
         print(path)

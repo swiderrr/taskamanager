@@ -22,7 +22,7 @@
                             <div class="d-flex flex-column justify-content-start ml-2">
                                 <span class="d-block font-weight-bold name">{{ comment.author }}
                                     {% if user == comment.author %}
-                                        <a class="fa fa-trash fa-sm" href="{% url 'deletecomment_page' pk=task.id comm_pk=comment.id %}" style="color:#c2c2c2;"></a>
+                                        <a class="fa fa-trash fa-sm" href="{% url 'deletecomment_page' pk=task.id comm_pk=comment.id %}"></a>
                                     {% endif %}
                                 </span>
                                 <span class="date text-black-50">{{ comment.created_at|date:"d-m-Y H:i" }}</span>
@@ -33,9 +33,14 @@
                         </div>
                         <div>
                             {% if comment.picture_set.get.file.url %}
-                                <a class="img-preview-box" target="_blank" href="{{ comment.picture_set.get.file }}">
-                                    <img class="img-preview" src="{{ comment.picture_set.get.file }}">
-                                </a>
+
+                                    <link href="{{ comment.picture_set.get.file }}" rel="stylesheet" type="text/css" />
+                                    <a href="#img{{ forloop.counter }}">
+                                        <img style="width:150px;" src="{{ comment.picture_set.get.file }}">
+                                    </a>
+                                    <a href="#" class="lightbox" id="img{{ forloop.counter }}">
+                                        <span style="background-image: url('{{ comment.picture_set.get.file }}')"></span>
+                                    </a>
                             {% endif %}
                         </div>
                     </div>
@@ -52,5 +57,6 @@
         </div>
     </div>
 </div>
+
 
 {% endblock %}

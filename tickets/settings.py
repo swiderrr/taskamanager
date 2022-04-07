@@ -14,6 +14,9 @@ import psycopg2
 import django_heroku
 import dj_database_url
 from pathlib import Path
+from dotenv import load_dotenv
+
+load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -81,9 +84,9 @@ WSGI_APPLICATION = 'tickets.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'dfe37eblitsn60',
-        'USER': 'xmdnrmkxiixnad',
-        'PASSWORD': 'b1d37557edc835c249e0c377dca5f0a1185d8801be4fd08b18af9e5997782499',
+        'NAME': os.getenv("DB_NAME"),
+        'USER': os.getenv("DB_USER"),
+        'PASSWORD': os.getenv("DB_PASSWORD"),
         'HOST': 'ec2-63-32-248-14.eu-west-1.compute.amazonaws.com',
         'PORT': '5432',
     }
@@ -150,9 +153,9 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 
-AWS_ACCESS_KEY_ID = 'AKIAUYPSJO3G3DZ5MNAD'
-AWS_SECRET_ACCESS_KEY = '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'
-AWS_STORAGE_BUCKET_NAME = 'helpdeskpvpl'
+AWS_ACCESS_KEY_ID = os.getenv("ENV_AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = os.getenv("ENV_AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = os.getenv("ENV_AWS_STORAGE_BUCKET_NAME")
 AWS_QUERYSTRING_AUTH = False
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None

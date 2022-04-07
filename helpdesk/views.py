@@ -5,6 +5,7 @@ from helpdesk.models import Task, Comment, Picture
 from .forms import TaskForm, CommentForm, PictureForm
 from datetime import datetime, timezone
 from django.shortcuts import render, get_object_or_404
+from django.db.models import Q
 from django.forms.models import model_to_dict
 from django.template import RequestContext
 import boto3
@@ -41,6 +42,10 @@ def login_page(request):
 
 
 def home_page(request):
+    query = ""
+    if request.GET:
+        query = request.GET['q']
+        query = str(query)
     if request.user.is_authenticated:
         if request.user.is_superuser:
             task_list = Task.objects.all().order_by('created_at')
@@ -67,17 +72,20 @@ def addtask_page(request):
     return render(request, 'addtask_page.html', {'task_form': task_form,
                                                  'picture_form': picture_form})
 
-def deletetask_page(pk):
+def deletetask_page(request, pk):
     task = get_object_or_404(Task, pk=pk)
     task.task_delete()
-    return redirect('home_page')
+    return redirect(request.META['HTTP_REFERER'])
 
 def deletecomment_page(request, comm_pk, pk):
     comment = get_object_or_404(Comment, pk=comm_pk)
     task = get_object_or_404(Task, pk=pk)
-    picture = Picture.objects.get(comment_id=comment.id)
+    try:
+        picture = Picture.objects.get(comment_id=comment.id)
+        picture.picture_delete()
+    except:
+        pass
     comment.comment_delete()
-    picture.picture_delete()
     return redirect(request.META['HTTP_REFERER'])
 
 def closetask_page(request, pk):
@@ -134,3 +142,20 @@ def taskdetails_page(request, pk):
                                                                   'picture_form': picture_form,
                                                                   'statuses': STATUSES_DICT,
                                                                   'comments_list': comments_list,})
+
+
+# # QUERYSETS
+#
+# def get_tasks_queryset(query=None):
+#     queryset = []
+#     queries = query.split(" ")
+#     for q in queries:
+#         tasks = Task.objects.filter(
+#             Q(title_icontrains=q) |
+#             Q(created_at_icontrains=q)
+#         )
+#
+#         for task in tasks:
+#             queryset.append(post)
+#
+#         return queryset

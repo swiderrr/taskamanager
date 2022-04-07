@@ -50,7 +50,7 @@ class Task(models.Model):
 class Comment(models.Model):
     author = models.ForeignKey('auth.User', on_delete=models.CASCADE)
     task = models.ForeignKey(Task, on_delete=models.CASCADE)
-    text = models.TextField(max_length=1000, null=False)
+    text = models.TextField(max_length=2000, null=False)
     created_at = models.DateTimeField(auto_now_add=True)
 
 

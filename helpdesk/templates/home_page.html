@@ -4,71 +4,75 @@
 {% load task_tags %}
 
 <main>
-  <table class="table_hp">
-    <thead>
-      <tr>
-        <th>
-          Autor
-        </th>
-        <th>
-          Status
-        </th>
-        <th>
-          Tytuł
-        </th>
-        <th>
-            Stworzono
-        </th>
-        <th>
-            Aktualizacja
-        </th>
-        <th>
-            Minęło
-        </th>
-        <th>
-            Priorytet
-        </th>
-        <th>
-            Komentarze
-        </th>
-        <th></th>
-      </tr>
-    </thead>
-    <tbody>
-    {% for task in task_list %}
-      <tr>
-        <td data-title='Author'>
-            {{ task.author }}
-        </td>
-        <td data-title='Statuses'>
-            <span class="badge bg-{{statuses|get_item:task.status}}">{{ task.status }}</span></h5>
-        </td>
-        <td data-title='Title'>
-            {{ task.title }}
-        </td>
-        <td data-title='Created_at'>
-            {{ task.created_at|date:"d-m-Y H:i" }}
-        </td>
-        <td data-title='Updated_at'>
-            {{ task.updated_at|date:"d-m-Y H:i" }}
-        </td>
-        <td data-title='Elapsed'>
-          {{ task.created_at|timesince:a_time }}
-        </td>
-        <td data-title='Priority'>
-          <span class="badge bg-{{priorities|get_item:task.priority}}">{{ task.priority }}</span></h5>
-        </td>
-        <td data-title='Comments'>
-            <span>{{ task.comment_set.all.count }}</span></h5>
-        </td>
-        <td class='select'>
-            <a class="fa fa-magnifying-glass fa-lg button_hp" style="color:#0DBF9F;" href="{% url 'taskdetails_page' pk=task.id %}"></a>
-            <a class="fa fa-trash fa-lg button_hp" style="color:#0DBF9F;" href="{% url 'deletetask_page' pk=task.id %}"></a>
-            <a class="fa fa-check fa-lg button_hp" style="color:#0DBF9F;" href="{% url 'closetask_page' pk=task.id %}"></a>
+    </div>
+      <table class="table_hp">
+        <thead>
+          <tr>
+            <th>
+              Autor
+            </th>
+            <th>
+              Status
+            </th>
+            <th>
+              Tytuł
+            </th>
+            <th>
+                Stworzono
+            </th>
+            <th>
+                Aktualizacja
+            </th>
+            <th>
+                Minęło
+            </th>
+            <th>
+                Priorytet
+            </th>
+            <th>
+                Komentarze
+            </th>
+            <th>
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+        {% for task in task_list %}
+          <tr>
+            <td data-title='Author'>
+                {% with full_name=task.author.username|get_fullname %}
+                    {{ full_name|join:" " }}
+                {% endwith %}
+            </td>
+            <td data-title='Statuses'>
+                <span class="badge bg-{{statuses|get_item:task.status}}">{{ task.status }}</span></h5>
+            </td>
+            <td data-title='Title'>
+                {{ task.title }}
+            </td>
+            <td data-title='Created_at'>
+                {{ task.created_at|date:"d-m-Y H:i" }}
+            </td>
+            <td data-title='Updated_at'>
+                {{ task.updated_at|date:"d-m-Y H:i" }}
+            </td>
+            <td data-title='Elapsed'>
+              {{ task.created_at|timesince:a_time }}
+            </td>
+            <td data-title='Priority'>
+              <span class="badge bg-{{priorities|get_item:task.priority}}">{{ task.priority }}</span></h5>
+            </td>
+            <td data-title='Comments'>
+                <span>{{ task.comment_set.all.count }}</span></h5>
+            </td>
+            <td class='select'>
+                <a class="fa fa-magnifying-glass fa-lg button_hp" style="color:#0DBF9F;" href="{% url 'taskdetails_page' pk=task.id %}"></a>
+                <a class="fa fa-trash fa-lg button_hp" style="color:#0DBF9F;" href="{% url 'deletetask_page' pk=task.id %}"></a>
+                <a class="fa fa-check fa-lg button_hp" style="color:#0DBF9F;" href="{% url 'closetask_page' pk=task.id %}"></a>
 
-        </td>
-      </tr>
-    {% endfor %}
-    </tbody>
-  </table>
+            </td>
+          </tr>
+        {% endfor %}
+        </tbody>
+      </table>
 {% endblock %}

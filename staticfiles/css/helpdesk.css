@@ -187,7 +187,17 @@ h2 {
   border-radius: 0 0 10px 10px;
 }
 
+/* COMMENT */
 
+.comment-image {
+    width: 150px;
+    transition: border: 1s, opacity 1s;
+}
+
+.comment-image:hover {
+    opacity:0.7;
+    border:1px dotted black;
+}
 
 /* TABS */
 
@@ -275,7 +285,7 @@ textarea {
   border: none;
   color: #0d0d0d;
   padding: 15px 32px;
-  text-align: center;
+  text-align: left;
   text-decoration: none;
   display: inline-block;
   font-size: 16px;

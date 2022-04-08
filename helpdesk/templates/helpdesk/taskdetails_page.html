@@ -1,13 +1,15 @@
 {% extends 'helpdesk/base.html' %}
 {% block content %}
 {% load task_tags %}
+{% load text_to_hexcolor from task_tags %}
+
 <div class="container mt-5">
     <div class="d-flex justify-content-center row">
         <div class="col-md-8" style="text-align: center;">
                 <h1>{{ task.title }} <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='{% url 'home_page' %}'">Powrót</button></h1>
                 <b>Minęło: {{ task.created_at|timesince:a_time }}</b><br>
                 <span class="badge bg-{{statuses|get_item:task.status}}">{{ task.status }}</span>
-                <p>{{ task.desc }}</p>
+                <p style="text-align:left;">{{ task.desc }}</p>
         </div>
     </div>
 </div>
@@ -19,7 +21,7 @@
             <div class="d-flex flex-column comment-section">
                 {% for comment in comments_list %}
                     <div class="bg-white p-2" style="border-bottom: 2px dotted #c2c2c2;">
-                        <div class="d-flex flex-row user-info"><img class="rounded-circle" src="https://ui-avatars.com/api/?name={{ comment.author.username|get_fullname|join:" " }}" width="40">
+                        <div class="d-flex flex-row user-info"><img class="rounded-circle" src="https://ui-avatars.com/api/?name={{ comment.author.username|get_fullname|join:"+" }}&background={{ comment.author.username|get_fullname|text_to_hexcolor }}&color=fff" width="40">
                             <div class="d-flex flex-column justify-content-start ml-2">
                                 <span class="d-block font-weight-bold name">{{ comment.author.username|get_fullname|join:" " }}
                                     {% if user == comment.author %}
@@ -37,7 +39,7 @@
 
                                     <link href="{{ comment.picture_set.get.file }}" rel="stylesheet" type="text/css" />
                                     <a href="#img{{ forloop.counter }}">
-                                        <img style="width:150px;" src="{{ comment.picture_set.get.file }}">
+                                        <img class="comment-image" src="{{ comment.picture_set.get.file }}">
                                     </a>
                                     <a href="#" class="lightbox" id="img{{ forloop.counter }}">
                                         <span style="background-image: url('{{ comment.picture_set.get.file }}')"></span>
@@ -49,10 +51,7 @@
             <form action='' method="POST" style="text-align:center; margin-top:10px;" enctype="multipart/form-data">
                 {% csrf_token %}
                 <div class="bg-light p-2">
-
-
-                    <div class="d-flex flex-row align-items-start"><img class="rounded-circle" src="https://ui-avatars.com/api/?name={{ user.username|get_fullname|join:"+" }}" width="40">{{ comment_form }}</div>
-
+                    <div class="d-flex flex-row align-items-start"><img class="rounded-circle" src="https://ui-avatars.com/api/?name={{ user.username|get_fullname|join:"+" }}&background={{ user.username|get_fullname|text_to_hexcolor }}&color=fff" width="40">{{ comment_form }}</div>
                     <div class="mt-2 text-left">{{ picture_form }}</div>
                     <div class="mt-2 text-right"><button class="btn btn-primary btn-sm shadow-none" type="submit">Dodaj komentarz</button><button class="btn btn-outline-primary btn-sm ml-1 shadow-none" type="button" onclick="location.href='{% url 'home_page' %}'">Powrót</button></div>
                 </div>

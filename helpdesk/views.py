@@ -42,10 +42,6 @@ def login_page(request):
 
 
 def home_page(request):
-    query = ""
-    if request.GET:
-        query = request.GET['q']
-        query = str(query)
     if request.user.is_authenticated:
         if request.user.is_superuser:
             task_list = Task.objects.all().order_by('created_at')

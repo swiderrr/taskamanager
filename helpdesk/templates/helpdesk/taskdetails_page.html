@@ -1,14 +1,15 @@
 {% extends 'helpdesk/base.html' %}
 {% block content %}
 {% load task_tags %}
-<div class="comments_headline" style="text-align:center;">
-<h1>{{ task.title }} <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='{% url 'home_page' %}'">Powrót</button></h1>
-
-<p><b>Minęło: {{ task.created_at|timesince:a_time }}</b></p>
-<p>
-    <span class="badge bg-{{statuses|get_item:task.status}}">{{ task.status }}</span>
-</p>
-<p>{{ task.desc }} </p>
+<div class="container mt-5">
+    <div class="d-flex justify-content-center row">
+        <div class="col-md-8" style="text-align: center;">
+                <h1>{{ task.title }} <button type="button" class="btn btn-secondary btn-sm" onclick="location.href='{% url 'home_page' %}'">Powrót</button></h1>
+                <b>Minęło: {{ task.created_at|timesince:a_time }}</b><br>
+                <span class="badge bg-{{statuses|get_item:task.status}}">{{ task.status }}</span>
+                <p>{{ task.desc }}</p>
+        </div>
+    </div>
 </div>
 
 
@@ -29,7 +30,7 @@
                             </div>
                         </div>
                         <div class="mt-2">
-                            <p class="comment-text">{{ comment.text|linebreaks }}</p>
+                            <p class="comment-text" style="overflow-wrap: break-word">{{ comment.text }}</p>
                         </div>
                         <div>
                             {% if comment.picture_set.get.file.url %}

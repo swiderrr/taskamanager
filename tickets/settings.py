@@ -86,15 +86,14 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': os.getenv("DB_NAME"),
         'USER': os.getenv("DB_USER"),
-        'URL': 'postgres://oigwmltjkecaqg:553e576ff81cf6d87c7557ff1c3522778cf52480d288d608787b8a1b66209edd@ec2-63-32-248-14.eu-west-1.compute.amazonaws.com:5432/d9862l5ug0qbus',
         'PASSWORD': '553e576ff81cf6d87c7557ff1c3522778cf52480d288d608787b8a1b66209edd',
         'HOST': 'ec2-63-32-248-14.eu-west-1.compute.amazonaws.com',
         'PORT': '5432',
     }
 }
-# import dj_database_url
-# db_from_env = dj_database_url.config(conn_max_age=600)
-# DATABASES['default'].update(db_from_env)
+import dj_database_url
+db_from_env = dj_database_url.config(conn_max_age=600)
+DATABASES['default'].update(db_from_env)
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
